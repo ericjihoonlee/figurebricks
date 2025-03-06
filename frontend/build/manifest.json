@@ -1,0 +1,9 @@
+{
+  "short_name": "Figure Bricks",
+  "name": "Figure Bricks - AI-Powered Real Estate Ad Generator",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+} 
