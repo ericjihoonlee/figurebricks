@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import LandingPage from './pages/LandingPage';
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import AdCreator from './pages/AdCreator';
 
@@ -14,7 +15,7 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
 
   return children;
@@ -25,6 +26,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
         <Route 
           path="/dashboard" 
           element={
