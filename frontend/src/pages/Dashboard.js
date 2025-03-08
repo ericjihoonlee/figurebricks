@@ -43,7 +43,9 @@ const Dashboard = () => {
               savedAds.map(ad => (
                 <div key={ad.id} className="saved-ad">
                   <div className="saved-ad-image">
-                    {ad.image ? (
+                    {ad.generatedImage ? (
+                      <img src={ad.generatedImage} alt={ad.propertyTitle} />
+                    ) : ad.image ? (
                       <img src={ad.image} alt={ad.propertyTitle} />
                     ) : (
                       <div className="placeholder-image">No Image</div>

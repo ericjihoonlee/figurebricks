@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/AdPreview.css';
 
-const AdPreview = ({ adData, isGenerated }) => {
+const AdPreview = ({ adData, isGenerated, generatedImage }) => {
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -14,15 +14,17 @@ const AdPreview = ({ adData, isGenerated }) => {
     <div className={`ad-preview ${adData.platform}`}>
       <div className="preview-container">
         <div className="preview-image">
-          {adData.image ? (
+          {isGenerated && generatedImage ? (
+            <img src={generatedImage} alt="AI Generated Property" />
+          ) : adData.image ? (
             <img src={adData.image} alt="Property" />
           ) : (
             <div className="placeholder-image">
-              <span>{isGenerated ? "AI Generated Image" : "Upload an image"}</span>
+              <span>{isGenerated ? "Generating image..." : "Upload an image or generate an ad"}</span>
             </div>
           )}
           
-          {isGenerated && !adData.image && (
+          {isGenerated && (
             <div className="ai-overlay">
               <span>AI Enhanced</span>
             </div>

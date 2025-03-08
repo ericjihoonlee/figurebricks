@@ -5,6 +5,14 @@ import ImageUploader from '../components/ImageUploader';
 import TextEditor from '../components/TextEditor';
 import AdPreview from '../components/AdPreview';
 
+// Sample AI-generated images for demo purposes
+const sampleImages = [
+  'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=1000',
+  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000',
+  'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1000',
+  'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1000'
+];
+
 const AdCreator = () => {
   const navigate = useNavigate();
   const [adData, setAdData] = useState({
@@ -20,6 +28,7 @@ const AdCreator = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationProgress, setGenerationProgress] = useState(0);
   const [isGenerated, setIsGenerated] = useState(false);
+  const [generatedImage, setGeneratedImage] = useState(null);
   const [savedAds, setSavedAds] = useState([]);
 
   const handleImageUpload = (imageFile) => {
@@ -43,6 +52,11 @@ const AdCreator = () => {
           clearInterval(interval);
           setIsGenerating(false);
           setIsGenerated(true);
+          
+          // Select a random sample image to simulate AI generation
+          const randomIndex = Math.floor(Math.random() * sampleImages.length);
+          setGeneratedImage(sampleImages[randomIndex]);
+          
           return 100;
         }
         return prev + 10;
@@ -57,7 +71,12 @@ const AdCreator = () => {
     }
     
     // In a real app, we'd save to a database here
-    const newAd = { ...adData, id: Date.now() };
+    const newAd = { 
+      ...adData, 
+      id: Date.now(),
+      generatedImage: generatedImage 
+    };
+    
     const updatedAds = [...savedAds, newAd];
     setSavedAds(updatedAds);
     
@@ -73,12 +92,9 @@ const AdCreator = () => {
       return;
     }
     
-    // In a real app, we'd generate a downloadable file
-    // For now, we'll just simulate a download
-    
     // Create a temporary link element
     const link = document.createElement('a');
-    link.href = adData.image || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+    link.href = generatedImage || adData.image || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
     link.download = `figure-bricks-ad-${Date.now()}.png`;
     document.body.appendChild(link);
     link.click();
@@ -148,7 +164,11 @@ const AdCreator = () => {
 
         <div className="preview-panel">
           <h2>Ad Preview</h2>
-          <AdPreview adData={adData} isGenerated={isGenerated} />
+          <AdPreview 
+            adData={adData} 
+            isGenerated={isGenerated} 
+            generatedImage={generatedImage}
+          />
         </div>
       </div>
     </div>
