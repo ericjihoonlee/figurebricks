@@ -14,8 +14,13 @@ const AdCreator = () => {
     baths: 2,
     sqft: 2000,
     price: 599000,
-    platform: 'instagram'
+    platform: 'instagram',
+    description: ''
   });
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationProgress, setGenerationProgress] = useState(0);
+  const [isGenerated, setIsGenerated] = useState(false);
+  const [savedAds, setSavedAds] = useState([]);
 
   const handleImageUpload = (imageFile) => {
     // Create URL for preview
@@ -27,16 +32,58 @@ const AdCreator = () => {
     setAdData({...adData, [field]: value});
   };
 
+  const generateAd = () => {
+    setIsGenerating(true);
+    setGenerationProgress(0);
+    
+    // Simulate AI generation with progress updates
+    const interval = setInterval(() => {
+      setGenerationProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsGenerating(false);
+          setIsGenerated(true);
+          return 100;
+        }
+        return prev + 10;
+      });
+    }, 300);
+  };
+
   const handleSave = () => {
+    if (!isGenerated) {
+      alert('Please generate an ad first!');
+      return;
+    }
+    
     // In a real app, we'd save to a database here
-    console.log('Saving ad:', adData);
+    const newAd = { ...adData, id: Date.now() };
+    const updatedAds = [...savedAds, newAd];
+    setSavedAds(updatedAds);
+    
+    // Store in localStorage for persistence
+    localStorage.setItem('savedAds', JSON.stringify(updatedAds));
+    
     alert('Ad saved successfully!');
-    navigate('/dashboard');
   };
 
   const handleExport = () => {
+    if (!isGenerated) {
+      alert('Please generate an ad first!');
+      return;
+    }
+    
     // In a real app, we'd generate a downloadable file
-    console.log('Exporting ad:', adData);
+    // For now, we'll just simulate a download
+    
+    // Create a temporary link element
+    const link = document.createElement('a');
+    link.href = adData.image || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+    link.download = `figure-bricks-ad-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
     alert('Ad exported! Check your downloads folder.');
   };
 
@@ -54,12 +101,12 @@ const AdCreator = () => {
       <div className="creator-content">
         <div className="editor-panel">
           <section className="upload-section">
-            <h2>1. Upload Property Image</h2>
+            <h2>1. Upload Property Image (Optional)</h2>
             <ImageUploader onImageUpload={handleImageUpload} />
           </section>
 
           <section className="text-section">
-            <h2>2. Property Details</h2>
+            <h2>2. Property Details (Optional)</h2>
             <TextEditor adData={adData} onTextChange={handleTextChange} />
           </section>
 
@@ -80,11 +127,28 @@ const AdCreator = () => {
               </button>
             </div>
           </section>
+
+          <section className="generate-section">
+            <button 
+              className="generate-btn" 
+              onClick={generateAd}
+              disabled={isGenerating}
+            >
+              {isGenerating ? 'Generating...' : isGenerated ? 'Regenerate Ad' : 'Create the Ad'}
+            </button>
+            
+            {isGenerating && (
+              <div className="progress-container">
+                <div className="progress-bar" style={{ width: `${generationProgress}%` }}></div>
+                <div className="progress-text">{generationProgress}%</div>
+              </div>
+            )}
+          </section>
         </div>
 
         <div className="preview-panel">
           <h2>Ad Preview</h2>
-          <AdPreview adData={adData} />
+          <AdPreview adData={adData} isGenerated={isGenerated} />
         </div>
       </div>
     </div>

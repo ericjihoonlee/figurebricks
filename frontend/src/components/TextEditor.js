@@ -11,6 +11,7 @@ const TextEditor = ({ adData, onTextChange }) => {
           id="propertyTitle"
           value={adData.propertyTitle}
           onChange={(e) => onTextChange('propertyTitle', e.target.value)}
+          placeholder="Enter property title"
         />
       </div>
 
@@ -21,7 +22,8 @@ const TextEditor = ({ adData, onTextChange }) => {
             type="number"
             id="beds"
             value={adData.beds}
-            onChange={(e) => onTextChange('beds', parseInt(e.target.value))}
+            onChange={(e) => onTextChange('beds', parseInt(e.target.value) || 0)}
+            placeholder="0"
           />
         </div>
 
@@ -31,7 +33,8 @@ const TextEditor = ({ adData, onTextChange }) => {
             type="number"
             id="baths"
             value={adData.baths}
-            onChange={(e) => onTextChange('baths', parseInt(e.target.value))}
+            onChange={(e) => onTextChange('baths', parseInt(e.target.value) || 0)}
+            placeholder="0"
           />
         </div>
 
@@ -41,7 +44,8 @@ const TextEditor = ({ adData, onTextChange }) => {
             type="number"
             id="sqft"
             value={adData.sqft}
-            onChange={(e) => onTextChange('sqft', parseInt(e.target.value))}
+            onChange={(e) => onTextChange('sqft', parseInt(e.target.value) || 0)}
+            placeholder="0"
           />
         </div>
       </div>
@@ -52,7 +56,19 @@ const TextEditor = ({ adData, onTextChange }) => {
           type="number"
           id="price"
           value={adData.price}
-          onChange={(e) => onTextChange('price', parseInt(e.target.value))}
+          onChange={(e) => onTextChange('price', parseInt(e.target.value) || 0)}
+          placeholder="0"
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="description">Describe how you'd like your ad to look</label>
+        <textarea
+          id="description"
+          value={adData.description}
+          onChange={(e) => onTextChange('description', e.target.value)}
+          placeholder="Example: Create a modern, elegant ad highlighting the waterfront views. Use blue tones and emphasize the luxury aspects."
+          rows={4}
         />
       </div>
     </div>

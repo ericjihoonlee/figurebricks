@@ -34,6 +34,18 @@
   color: #718096;
 }
 
+.ai-overlay {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(49, 130, 206, 0.8);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
 .preview-details {
   padding: 1.5rem;
 }
@@ -56,6 +68,15 @@
   font-size: 1.5rem;
   font-weight: 600;
   color: #2b6cb0;
+  margin-bottom: 1rem;
+}
+
+.generated-description {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+  font-style: italic;
+  color: #4a5568;
 }
 
 /* Platform specific styles */
